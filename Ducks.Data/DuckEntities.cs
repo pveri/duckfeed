@@ -59,6 +59,7 @@ namespace Ducks.Data
 
     public class FeedLog
     {
+        public Guid Id { get; set; }
         public User User { get; set; }
         public Location Location { get; set; }
         public Food Food { get; set; }
