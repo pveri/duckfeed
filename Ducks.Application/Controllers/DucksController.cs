@@ -26,6 +26,28 @@ namespace Ducks.Application.Controllers
             return Json(_manager.AddLocation(NewLocation));
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("api/Ducks/Location/Countries")]
+        public async Task<object> ListCountries()
+        {
+            return Json(_manager.Countries().Select(x => new { Id=x.Id, Name = x.Name }));
+        }
 
+        [HttpPost]
+        [Authorize]
+        [Route("api/Ducks/Location/States")]
+        public async Task<object> ListStates([FromBody]Guid Country)
+        {
+            return Json(_manager.States(Country).Select(x => new { Id = x.Id, Name = x.Name }));
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("api/Ducks/Location/Cities")]
+        public async Task<object> ListCities([FromBody]Guid State)
+        {
+            return Json(_manager.Cities(State).Select(x => new { Id = x.Id, Name = x.Name }));
+        }
     }
 }

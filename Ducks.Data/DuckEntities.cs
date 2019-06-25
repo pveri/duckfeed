@@ -23,6 +23,7 @@ namespace Ducks.Data
     {
         public Guid Id { get; set; }
         public virtual Country Country { get; set; }
+        public virtual State State { get; set; }
         public string Name { get; set; }
     }
 

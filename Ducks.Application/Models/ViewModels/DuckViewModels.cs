@@ -20,7 +20,6 @@ namespace Ducks.Application.Models.ViewModels
         public String Country { get; set; }
         public String State { get; set; }
         public String Address { get; set; }
-
     }
 
     public class FoodVM

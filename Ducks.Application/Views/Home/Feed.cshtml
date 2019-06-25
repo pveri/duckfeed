@@ -23,6 +23,24 @@
                         <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
                         <span class="sr-only">Loading...</span>
                     </div>
+                    <div id="sectLocation">
+                        <label>Select Country:</label>
+                        <select id="ddlCountry" onchange="ApiRequest($(this).val(), '/api/Ducks/Location/States', GetStates)">
+
+                        </select>
+                        <div id="sectState">
+                            <label>Select State:</label>
+                            <select id="ddlState" onchange="ApiRequest($(this).val(), '/api/Ducks/Location/Cities', GetCities)"></select>
+                        </div>
+                        <div id="sectCity">
+                            <label>Select City:</label>
+                            <select id="ddlCity"></select>
+                        </div>
+                        <div id="sectAddressEnter">
+                            <label>Enter Address:</label>
+                            <input type="text" />
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div style="float:left">
@@ -42,12 +60,12 @@
         <div class="form-group">
             @Html.LabelFor(x => x.Locations, htmlAttributes: new { @class = "control-label" })
             @Html.DropDownListFor(x => x.Locations, new SelectList(Model.Locations, "Key", "Value"))
-            <button class="btn btn-default" onclick="LocationDialog('Location')" type="button">Add new Location</button>
+            <button class="btn btn-default" onclick="Dialog('Location')" type="button">Add new Location</button>
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Food, htmlAttributes: new { @class = "control-label" })
             @Html.DropDownListFor(x => x.Food, new SelectList(Model.Food, "Key", "Value"))
-            <button class="btn btn-default" onclick="LocationDialog('Food')" type="button">Add Food Item</button>
+            <button class="btn btn-default" onclick="Dialog('Food')" type="button">Add Food Item</button>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.FoodAmount, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -93,22 +111,64 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 
-    function LocationDialog() {
+    var BaseApi = '';
+
+    function Dialog(mode) {
+        if (mode == 'Location') {
+            ApiRequest('','/api/Ducks/Location/Countries',GetCountries)
+        }
         $('#AjaxDlg').modal('show');
     }
 
     function CancelAdd() {
+        ClearModal();
         $('#AjaxDlg').modal('hide');
     }
 
     $(document).ready(function () {
-        $("#DateFed").kendoDatePicker({
-            start: "year",
-            depth: "year",
-            format: "yyyy MMM",
-            dateInput: true,
-            value: new Date()
-            //change:GetChart
-        });
+      $("#DateFed").datepicker({
+        format: "yyyy M dd",
+        dateInput: true,
+        value: new Date()
+    });
     })
+
+    function GetStates(arr) {
+        $('#ddlState').html('');
+         $('#ddlState').append('<option value="-1">Select State/Province</option>');
+ for (var i = 0; i < arr.length; i++) {
+               $('#ddlState').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+        
+        }
+        }
+
+    function GetCities(arr) {
+        $('#ddlCity').html('');
+        $('#ddlCity').append('<option value="-1">Select City</option>');
+         for (var i = 0; i < arr.length; i++) {
+               $('#ddlCity').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+        }
+        }
+    function GetCountries(arr) {
+          $('#ddlCountry').append('<option value="-1">Select State/Province</option>');
+         for (var i = 0; i < arr.length; i++) {
+             $('#ddlCountry').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+        }
+    }
+
+
+    function ApiRequest(data, endpoint, callback) {
+    $.ajax({
+        type: 'POST',
+        url: endpoint,
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            if (typeof(callback) != 'undefined') {
+                callback(response);
+            }
+        }
+
+    });
+}
 </script>
