@@ -23,11 +23,9 @@
                         <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
                         <span class="sr-only">Loading...</span>
                     </div>
-                    <div id="sectLocation">
+                    <div id="sectLocation" data-section="Location" style="display:none">
                         <label>Select Country:</label>
-                        <select id="ddlCountry" onchange="ApiRequest($(this).val(), '/api/Ducks/Location/States', GetStates)">
-
-                        </select>
+                        <select id="ddlCountry" onchange="ApiRequest($(this).val(), '/api/Ducks/Location/States', GetStates)"></select>
                         <div id="sectState">
                             <label>Select State:</label>
                             <select id="ddlState" onchange="ApiRequest($(this).val(), '/api/Ducks/Location/Cities', GetCities)"></select>
@@ -39,6 +37,16 @@
                         <div id="sectAddressEnter">
                             <label>Enter Address:</label>
                             <input type="text" />
+                        </div>
+                    </div>
+                    <div id="sectFood" data-section="Food" style="display:none">
+                        <label>Name</label>
+                        <input type="text" id="txtFood"/>
+                        <div id="sectState">
+                            <label>Select Unit:</label>
+                            <select id="ddlUnit">
+                                <option>Select Unit</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -114,14 +122,23 @@
     var BaseApi = '';
 
     function Dialog(mode) {
+       $('[data-section]').hide();
+        $('[data-section="' + mode + '"]').show();
         if (mode == 'Location') {
-            ApiRequest('','/api/Ducks/Location/Countries',GetCountries)
+            ApiRequest('', '/api/Ducks/Location/Countries', GetCountries)
+        }
+        else {
+            ApiRequest('', '/api/Ducks/Food/Units', function (e) {
+                for (var i = 0; i < e.length; i++) {
+                    $('#ddlUnit').append(new Option(e[i].Name, e[i].Id));
+                }
+            })
         }
         $('#AjaxDlg').modal('show');
     }
 
     function CancelAdd() {
-        ClearModal();
+    //    ClearModal();
         $('#AjaxDlg').modal('hide');
     }
 

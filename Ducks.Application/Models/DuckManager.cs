@@ -25,10 +25,21 @@ namespace Ducks.Application.Models
             return toReturn;
         }
 
-        public Models.ViewModels.LocationVM AddLocation(LocationVM locationVM)
+        public Models.ViewModels.FoodVM AddFood(FoodVM FoodVM, String User)
+        {
+            var Food = new Ducks.Data.Food();
+            Food.Unit = _db.Unit.Find(FoodVM.UnitId);
+            Food.AddedBy = User;
+            _db.Food.Add(Food);
+            _db.SaveChangesAsync();
+            return new FoodVM () { Name = Food.Name }; //TODO: Display Method
+        }
+
+        public Models.ViewModels.LocationVM AddLocation(LocationVM locationVM, String User)
         {
             var location = new Ducks.Data.Location();
             location.Address = locationVM.Address;
+            location.AddedBy = User;
             _db.Locations.Add(location);
             _db.SaveChangesAsync();
             return locationVM;
@@ -47,6 +58,10 @@ namespace Ducks.Application.Models
         public List<Ducks.Data.City> Cities(Guid State)
         {
             return _db.Cities.Where(x => x.State.Id== State).ToList();
+        }
+        public List<Data.Unit> UnitsOfMeasure()
+        {
+            return _db.Unit.ToList();
         }
     }
 }

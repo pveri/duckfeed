@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ducks.Data
 {
+    public class BaseData
+    {
+        public String AddedBy { get; set; }
+        public DateTime? AddedDate { get; set; }
+    }
     public class Country
     {
         public Guid Id { get; set; }
@@ -27,7 +32,7 @@ namespace Ducks.Data
         public string Name { get; set; }
     }
 
-    public class Location
+    public class Location : BaseData
     {
         public Guid Id { get; set; }
         public virtual City City { get; set; }
@@ -50,7 +55,7 @@ namespace Ducks.Data
         public Guid Id { get; set; }
         public String Measurement { get; set; }
     }
-    public class Food
+    public class Food : BaseData
     {
         public Guid id { get; set; }
         public String Name { get; set; }

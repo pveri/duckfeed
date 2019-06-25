@@ -23,7 +23,7 @@ namespace Ducks.Application.Controllers
         [Route("api/Ducks/Location/Add")]
         public async Task<JsonResult<LocationVM>> AddLocation([FromBody]LocationVM NewLocation)
         {
-            return Json(_manager.AddLocation(NewLocation));
+            return Json(_manager.AddLocation(NewLocation, User.Identity.Name));
         }
 
         [HttpPost]
@@ -48,6 +48,21 @@ namespace Ducks.Application.Controllers
         public async Task<object> ListCities([FromBody]Guid State)
         {
             return Json(_manager.Cities(State).Select(x => new { Id = x.Id, Name = x.Name }));
+        }
+        [HttpPost]
+        [Authorize]
+        [Route("api/Ducks/Food/Units")]
+        public async Task<object> ListUnitsOfMeasure()
+        {
+            return Json(_manager.UnitsOfMeasure().Select(x => new { Id = x.Id, Name = x.Measurement }));
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("api/Ducks/Food/Add")]
+        public async Task<JsonResult<FoodVM>> AddFood([FromBody]FoodVM NewFood)
+        {
+            return Json(_manager.AddFood(NewFood, User.Identity.Name));
         }
     }
 }

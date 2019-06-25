@@ -26,6 +26,6 @@ namespace Ducks.Application.Models.ViewModels
     {
         public String Name { get; set; }
         public Dictionary<Guid, String> UnitStored { get; set; }
-
+        public Guid UnitId { get; set; }
     }
 }
