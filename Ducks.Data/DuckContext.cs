@@ -8,7 +8,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Ducks.Data.Context
 {
-    class DuckContext : DbContext
+    public class DuckContext : DbContext
     {
         public DuckContext(string conn) : base(conn)
         {

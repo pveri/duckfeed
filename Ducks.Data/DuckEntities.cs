@@ -22,14 +22,14 @@ namespace Ducks.Data
     public class City
     {
         public Guid Id { get; set; }
-        public Country Country { get; set; }
+        public virtual Country Country { get; set; }
         public string Name { get; set; }
     }
 
     public class Location
     {
         public Guid Id { get; set; }
-        public City City { get; set; }
+        public virtual City City { get; set; }
         public String KeyWords { get; set; }
         public String Address { get; set; }
     }
@@ -65,6 +65,7 @@ namespace Ducks.Data
         public Food Food { get; set; }
         public int FoodAmount { get; set; }
         public int DucksFed { get; set; }
+        public DateTime? DateFed { get; set; }
 
     }
 

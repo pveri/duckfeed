@@ -1,0 +1,87 @@
+﻿@model Ducks.Application.Models.ViewModels.FeedingVM
+
+@{
+    ViewBag.Title = "Feed";
+}
+
+<h2>Feed</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="AjaxDlg" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="width:600px !important">
+                <div class="modal-header">
+                    <span id="lblDialogTitle" />
+                </div>
+                <div class="modal-body">
+                    <div id="loading" style="display: none; position: absolute; left: 50%;">
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="float:left">
+                        <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
+                    </div>
+                    <div style="float:right">
+                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal"  onclick="AddLocation()">Enable</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <h4>FeedingVM</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(x => x.Locations, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(x => x.Locations, new SelectList(Model.Locations, "Key", "Value"))
+            <button class="btn btn-default" onclick="LocationDialog()" type="button">Add new Location</button>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateFed, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateFed, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateFed, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+
+    function LocationDialog() {
+        $('#AjaxDlg').modal('show');
+        }
+
+    function CancelAdd() {
+           $('#AjaxDlg').modal('hide');
+    }
+</script>

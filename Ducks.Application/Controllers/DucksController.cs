@@ -9,5 +9,13 @@ namespace Ducks.Application.Controllers
 {
     public class DucksController : ApiController
     {
+        private Models.DuckManager _manager;
+
+        public DucksController()
+        {
+            _manager = new Models.DuckManager();
+        }
+
+
     }
 }

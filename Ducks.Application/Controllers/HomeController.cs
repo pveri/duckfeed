@@ -8,6 +8,13 @@ namespace Ducks.Application.Controllers
 {
     public class HomeController : Controller
     {
+        private Models.DuckManager _manager;
+        public HomeController()
+        {
+
+            _manager = new Models.DuckManager();
+        }
+
         [Authorize]
         public ActionResult Index()
         {
@@ -26,6 +33,11 @@ namespace Ducks.Application.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult Feed()
+        {
+            return View(_manager.FeedLogEntry());
         }
     }
 }
