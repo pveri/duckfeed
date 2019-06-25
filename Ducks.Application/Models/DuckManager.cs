@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Ducks.Application.Models.ViewModels;
-]
+
 
 namespace Ducks.Application.Models
 {
@@ -20,7 +20,7 @@ namespace Ducks.Application.Models
         {
             var toReturn = new Models.ViewModels.FeedingVM();
             toReturn.Locations = _db.Locations.Include("City").ToDictionary(x => x.Id, x => $"{x.Address}, {x.City.Name}" );
-            toReturn.Food = _db.Food.ToList();
+            toReturn.Food = _db.Food.ToDictionary(x => x.id, x => x.Name);
             return toReturn;
         }
 
@@ -28,8 +28,9 @@ namespace Ducks.Application.Models
         {
             var location = new Ducks.Data.Location();
             location.Address = locationVM.Address;
-            
-            return null;
+            _db.Locations.Add(location);
+            _db.SaveChangesAsync();
+            return locationVM;
         }
     }
 }
