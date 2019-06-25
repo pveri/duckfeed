@@ -35,6 +35,7 @@ namespace Ducks.Application.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Feed()
         {
             return View(_manager.FeedLogEntry());

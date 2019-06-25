@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -25,43 +26,47 @@ namespace Ducks.Application.Models
             return toReturn;
         }
 
-        public Models.ViewModels.FoodVM AddFood(FoodVM FoodVM, String User)
+        public async Task<Models.ViewModels.FoodVM> AddFood(FoodVM FoodVM, String User)
         {
             var Food = new Ducks.Data.Food();
             Food.Unit = _db.Unit.Find(FoodVM.UnitId);
             Food.AddedBy = User;
+            Food.Name = FoodVM.Name;
+            Food.id = Guid.NewGuid();
             _db.Food.Add(Food);
-            _db.SaveChangesAsync();
-            return new FoodVM () { Name = Food.Name }; //TODO: Display Method
+            await _db.SaveChangesAsync();
+            return new FoodVM () { Name = Food.Name , Id=Food.id}; //TODO: Display Method
         }
 
-        public Models.ViewModels.LocationVM AddLocation(LocationVM locationVM, String User)
+        public async Task<Models.ViewModels.LocationVM> AddLocation(LocationVM locationVM, String User)
         {
             var location = new Ducks.Data.Location();
             location.Address = locationVM.Address;
             location.AddedBy = User;
+            location.City = _db.Cities.Find(Guid.Parse(locationVM.CityId));
+            location.Id = Guid.NewGuid();
             _db.Locations.Add(location);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return locationVM;
         }
 
-        public List<Ducks.Data.Country> Countries()
+        public Task<List<Ducks.Data.Country>> Countries()
         {
-            return _db.Countries.ToList();
+            return _db.Countries.ToListAsync();
         }
 
-        public List<Ducks.Data.State> States(Guid Country)
+        public Task<List<Ducks.Data.State>> States(Guid Country)
         {
-            return _db.State.Where(x=>x.Country.Id==Country).ToList();
+            return _db.State.Where(x=>x.Country.Id==Country).ToListAsync();
         }
 
-        public List<Ducks.Data.City> Cities(Guid State)
+        public Task<List<Ducks.Data.City>> Cities(Guid State)
         {
-            return _db.Cities.Where(x => x.State.Id== State).ToList();
+            return _db.Cities.Where(x => x.State.Id== State).ToListAsync();
         }
-        public List<Data.Unit> UnitsOfMeasure()
+        public Task<List<Data.Unit>> UnitsOfMeasure()
         {
-            return _db.Unit.ToList();
+            return _db.Unit.ToListAsync();
         }
     }
 }

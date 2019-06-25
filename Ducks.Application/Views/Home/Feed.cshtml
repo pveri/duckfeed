@@ -41,7 +41,7 @@
                     </div>
                     <div id="sectFood" data-section="Food" style="display:none">
                         <label>Name</label>
-                        <input type="text" id="txtFood"/>
+                        <input type="text" id="txtFood" />
                         <div id="sectState">
                             <label>Select Unit:</label>
                             <select id="ddlUnit">
@@ -50,7 +50,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" data-section="Food">
+                    <div style="float:left">
+                        <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
+                    </div>
+                    <div style="float:right">
+                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddFood($('#txtFood').val(), $('#ddlUnit').val())">Enable</button>
+                    </div>
+                </div>
+                <div class="modal-footer" data-section="Location">
                     <div style="float:left">
                         <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
                     </div>
@@ -173,6 +181,14 @@
         }
     }
 
+
+    function AddFood(name, unitid) {
+        var food = { Name: name, UnitId: unitid };
+        ApiRequest(food, '/api/Ducks/Food/Add', function (e) {
+            $('#Food').append(new Option(e.Name, e.Id, true, true));
+             $('#AjaxDlg').modal('hide');
+        })
+    }
 
     function ApiRequest(data, endpoint, callback) {
     $.ajax({
