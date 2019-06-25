@@ -36,7 +36,7 @@
                         </div>
                         <div id="sectAddressEnter">
                             <label>Enter Address:</label>
-                            <input type="text" />
+                            <input type="text" id="txtAddress" />
                         </div>
                     </div>
                     <div id="sectFood" data-section="Food" style="display:none">
@@ -63,7 +63,7 @@
                         <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
                     </div>
                     <div style="float:right">
-                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddLocation()">Enable</button>
+                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddLocation($('#txtAddress').val(), $('#ddlCity').val())">Enable</button>
                     </div>
                 </div>
             </div>
@@ -75,12 +75,12 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(x => x.Locations, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(x => x.Locations, new SelectList(Model.Locations, "Key", "Value"))
+            @Html.DropDownListFor(x => x.LocationId, new SelectList(Model.Locations, "Key", "Value"))
             <button class="btn btn-default" onclick="Dialog('Location')" type="button">Add new Location</button>
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Food, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(x => x.Food, new SelectList(Model.Food, "Key", "Value"))
+            @Html.DropDownListFor(x => x.FoodId,new SelectList(Model.Food, "Key", "Value"))
             <button class="btn btn-default" onclick="Dialog('Food')" type="button">Add Food Item</button>
         </div>
         <div class="form-group">
@@ -190,6 +190,13 @@
         })
     }
 
+    function AddLocation(address,city) {
+        var locations = { Address: address, CityId: city, }
+          ApiRequest(locations, '/api/Ducks/Location/Add', function (e) {
+            $('#Locations').append(new Option(e.Address, e.Id, true, true));
+             $('#AjaxDlg').modal('hide');
+        })
+    }
     function ApiRequest(data, endpoint, callback) {
     $.ajax({
         type: 'POST',

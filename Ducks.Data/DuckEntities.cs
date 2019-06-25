@@ -20,7 +20,7 @@ namespace Ducks.Data
    public class State
     {
         public Guid Id { get; set; }
-        public Country Country { get; set; }
+        public virtual Country Country { get; set; }
         public String Name { get; set; }
     }
 
@@ -59,7 +59,7 @@ namespace Ducks.Data
     {
         public Guid id { get; set; }
         public String Name { get; set; }
-        public Unit Unit { get; set; }
+        public virtual Unit Unit { get; set; }
 
     }
 

@@ -68,5 +68,29 @@ namespace Ducks.Application.Models
         {
             return _db.Unit.ToListAsync();
         }
+
+        public async Task<Data.FeedLog> InsertFeedingRecord(FeedingVM feedingVm, string User)
+        {
+            var Feed = new Data.FeedLog();
+            Feed.DateFed = feedingVm.DateFed;
+            Feed.DucksFed = feedingVm.Quantity;
+            Feed.Food = _db.Food.Find(feedingVm.FoodId);
+            Feed.FoodAmount = feedingVm.FoodAmount;
+            Feed.Id = Guid.NewGuid();
+            Feed.Location = _db.Locations.Find(feedingVm.LocationId);
+            Feed.User = await _db.Users.FirstAsync(u => u.Email == User);
+            _db.FeedLog.Add(Feed);
+            await _db.SaveChangesAsync();
+            return Feed;
+        }
+
+        public void AddDuckFeeder(Guid Id, String Email, String FirstName="", String LastName="")
+        {
+            if (!_db.Users.Any(x=>x.Email==Email))
+            {
+                _db.Users.Add(new Data.User() { Email = Email, FirstName = FirstName, LastName = LastName });
+                _db.SaveChanges();
+            }
+        }
     }
 }
