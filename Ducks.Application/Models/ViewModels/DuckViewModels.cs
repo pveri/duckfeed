@@ -10,15 +10,18 @@ namespace Ducks.Application.Models.ViewModels
     {
         public Guid FoodId { get; set; }
         public Guid LocationId { get; set; }
-       public Dictionary<Guid, String> Locations { get; set; }
+        public Dictionary<Guid, String> Locations { get; set; }
         public Dictionary<Guid, String> Food { get; set; }
-       public int Quantity { get; set; }
+        public int Quantity { get; set; }
         public int FoodAmount { get; set; }
-       public DateTime DateFed { get; set; }
+        public DateTime DateFed { get; set; }
+        public String Time { get; set; }
+        public bool Schedule { get; set; }
     }
 
     public class LocationVM
     {
+        public Guid Id { get; set; }
         public String CityId { get; set; }
         public String Country { get; set; }
         public String State { get; set; }
@@ -37,14 +40,15 @@ namespace Ducks.Application.Models.ViewModels
     {
         public FeedingDetailsVM(Data.FeedLog record)
         {
-            this.Food = record.Food.Name;
+            this.Food = record?.Food?.Name;
             this.FoodAmount = record.FoodAmount;
             this.Quantity = record.DucksFed;
-            this.State = record.Location.City.State.Name;
+            this.State = record?.Location?.City?.State.Name;
             this.Time = record.DateFed.Value.ToString("yyyy MM dd");
-            this.Units = record.Food.Unit.Measurement;
-            this.Country = record.Location.City.Country.Name;
-            this.Address = record.Location.Address;
+            this.Units = record?.Food?.Unit.Measurement;
+            this.Country = record?.Location?.City?.Country.Name;
+            this.Address = record?.Location?.Address;
+            this.City = record?.Location?.City.Name;
         }
         public String Food { get; set; }
         public int Quantity { get; set; }

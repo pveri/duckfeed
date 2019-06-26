@@ -13,7 +13,7 @@ namespace Ducks.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationDataLossAllowed = false;
             AutomaticMigrationsEnabled = true;
         }
     }

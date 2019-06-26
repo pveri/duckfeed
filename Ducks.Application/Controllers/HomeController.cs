@@ -46,9 +46,16 @@ namespace Ducks.Application.Controllers
         [HttpPost]
         public async Task<ActionResult> Feed(Ducks.Application.Models.ViewModels.FeedingVM model)
         {
-            // Run in serial
+
             return View("Complete", new Ducks.Application.Models.ViewModels.FeedingDetailsVM(await _manager.InsertFeedingRecord(model, User.Identity.Name)));
         }
-         
+
+        [Authorize(Roles = "Researcher")]
+        public async Task<ActionResult> List()
+        {
+            return View((await _manager.GetAll()).Select(x => new Ducks.Application.Models.ViewModels.FeedingDetailsVM(x)));
+        }
+
+
     }
 }

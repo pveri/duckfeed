@@ -21,7 +21,7 @@ namespace Ducks.Application.Models
         public Models.ViewModels.FeedingVM FeedLogEntry()
         {
             var toReturn = new Models.ViewModels.FeedingVM();
-            toReturn.Locations = _db.Locations.Include("City").ToDictionary(x => x.Id, x => $"{x.Address}, {x.City.Name}" );
+            toReturn.Locations = _db.Locations.Include("City").ToDictionary(x => x.Id, x => $"{x.Address}, {x.City.Name}");
             toReturn.Food = _db.Food.ToDictionary(x => x.id, x => x.Name);
             return toReturn;
         }
@@ -35,7 +35,7 @@ namespace Ducks.Application.Models
             Food.id = Guid.NewGuid();
             _db.Food.Add(Food);
             await _db.SaveChangesAsync();
-            return new FoodVM () { Name = Food.Name , Id=Food.id}; //TODO: Display Method
+            return new FoodVM() { Name = Food.Name, Id = Food.id }; //TODO: Display Method
         }
 
         public async Task<Models.ViewModels.LocationVM> AddLocation(LocationVM locationVM, String User)
@@ -47,7 +47,7 @@ namespace Ducks.Application.Models
             location.Id = Guid.NewGuid();
             _db.Locations.Add(location);
             await _db.SaveChangesAsync();
-            return locationVM;
+            return new LocationVM() { Address = location.Address, Id = location.Id };
         }
 
         public Task<List<Ducks.Data.Country>> Countries()
@@ -57,16 +57,20 @@ namespace Ducks.Application.Models
 
         public Task<List<Ducks.Data.State>> States(Guid Country)
         {
-            return _db.State.Where(x=>x.Country.Id==Country).ToListAsync();
+            return _db.State.Where(x => x.Country.Id == Country).ToListAsync();
         }
 
         public Task<List<Ducks.Data.City>> Cities(Guid State)
         {
-            return _db.Cities.Where(x => x.State.Id== State).ToListAsync();
+            return _db.Cities.Where(x => x.State.Id == State).ToListAsync();
         }
         public Task<List<Data.Unit>> UnitsOfMeasure()
         {
             return _db.Unit.ToListAsync();
+        }
+        public Task<List<Data.FeedLog>> GetAll()
+        {
+            return _db.FeedLog.ToListAsync();
         }
 
         public async Task<Data.FeedLog> InsertFeedingRecord(FeedingVM feedingVm, string User)
@@ -80,15 +84,21 @@ namespace Ducks.Application.Models
             Feed.Location = _db.Locations.Find(feedingVm.LocationId);
             Feed.User = await _db.Users.FirstAsync(u => u.Email == User);
             _db.FeedLog.Add(Feed);
+
+
+            if (feedingVm.Schedule)
+            {
+                _db.Schedules.Add(new Data.Schedule() { Id = Guid.NewGuid(), FeedLog = Feed, User = Feed.User, TimeOfDay = feedingVm.Time });
+            }
             await _db.SaveChangesAsync();
             return Feed;
         }
 
-        public void AddDuckFeeder(Guid Id, String Email, String FirstName="", String LastName="")
+        public void AddDuckFeeder(Guid Id, String Email, String FirstName = "", String LastName = "")
         {
-            if (!_db.Users.Any(x=>x.Email==Email))
+            if (!_db.Users.Any(x => x.Email == Email))
             {
-                _db.Users.Add(new Data.User() { Email = Email, FirstName = FirstName, LastName = LastName });
+                _db.Users.Add(new Data.User() { Id = Id, Email = Email, FirstName = FirstName, LastName = LastName });
                 _db.SaveChanges();
             }
         }

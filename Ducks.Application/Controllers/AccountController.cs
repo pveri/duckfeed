@@ -159,7 +159,7 @@ namespace Ducks.Application.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _duckManager.AddDuckFeeder(user.Id, user.Email);
+                    _duckManager.AddDuckFeeder(Guid.Parse(user.Id), user.Email);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

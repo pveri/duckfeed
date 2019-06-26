@@ -17,7 +17,7 @@ namespace Ducks.Data
         public String Name { get; set; }
     }
 
-   public class State
+    public class State
     {
         public Guid Id { get; set; }
         public virtual Country Country { get; set; }
@@ -66,13 +66,20 @@ namespace Ducks.Data
     public class FeedLog
     {
         public Guid Id { get; set; }
-        public User User { get; set; }
-        public Location Location { get; set; }
-        public Food Food { get; set; }
+        public virtual User User { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Food Food { get; set; }
         public int FoodAmount { get; set; }
         public int DucksFed { get; set; }
         public DateTime? DateFed { get; set; }
+    }
 
+    public class Schedule
+    {
+        public Guid Id { get; set; }
+        public User User { get; set; }
+        public FeedLog FeedLog { get; set; }
+        public String TimeOfDay { get; set; }
     }
 
 }

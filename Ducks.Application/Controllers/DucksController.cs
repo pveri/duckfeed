@@ -68,5 +68,6 @@ namespace Ducks.Application.Controllers
         {
             return Json(await _manager.AddFood(NewFood, User.Identity.Name));
         }
+
     }
 }

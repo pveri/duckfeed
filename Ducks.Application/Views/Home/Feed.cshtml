@@ -3,10 +3,20 @@
 @{
     ViewBag.Title = "Feed";
 }
+<script type="text/javascript"
+        src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
 
+</script>
 
 <h2>Feed</h2>
+<style>
 
+    select {
+        height: 30px;
+        border: 1px solid gray;
+        border-radius: 3px;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
@@ -55,7 +65,7 @@
                         <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
                     </div>
                     <div style="float:right">
-                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddFood($('#txtFood').val(), $('#ddlUnit').val())">Enable</button>
+                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddFood($('#txtFood').val(), $('#ddlUnit').val())">Save</button>
                     </div>
                 </div>
                 <div class="modal-footer" data-section="Location">
@@ -63,7 +73,7 @@
                         <button id="btnMdlCancel" class="btn btn-default btnModal" type="button" onclick="CancelAdd()">Cancel</button>
                     </div>
                     <div style="float:right">
-                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddLocation($('#txtAddress').val(), $('#ddlCity').val())">Enable</button>
+                        <button type="button" id="btnMdlEnable" class="btn btn-default btnModal" onclick="AddLocation($('#txtAddress').val(), $('#ddlCity').val())">Save</button>
                     </div>
                 </div>
             </div>
@@ -80,7 +90,7 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Food, htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(x => x.FoodId,new SelectList(Model.Food, "Key", "Value"))
+            @Html.DropDownListFor(x => x.FoodId, new SelectList(Model.Food, "Key", "Value"))
             <button class="btn btn-default" onclick="Dialog('Food')" type="button">Add Food Item</button>
         </div>
         <div class="form-group">
@@ -105,6 +115,12 @@
                 @Html.ValidationMessageFor(model => model.DateFed, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group" id="SetSchedule">
+            <label>Time</label>
+            @Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+            <label>Set as recurring feeding?</label>
+            @Html.CheckBoxFor(model => model.Schedule, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -119,9 +135,9 @@
 </div>
 
 @section Scripts {
-@Scripts.Render("~/bundles/jqueryval")
-@Scripts.Render("~/Scripts/bootstrap-datepicker.min.js")
-@Styles.Render("~/Content/bootstrap-datepicker.min.css")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/bootstrap-datepicker.min.js")
+    @Styles.Render("~/Content/bootstrap-datepicker.min.css")
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -130,7 +146,7 @@
     var BaseApi = '';
 
     function Dialog(mode) {
-       $('[data-section]').hide();
+        $('[data-section]').hide();
         $('[data-section="' + mode + '"]').show();
         if (mode == 'Location') {
             ApiRequest('', '/api/Ducks/Location/Countries', GetCountries)
@@ -146,38 +162,38 @@
     }
 
     function CancelAdd() {
-    //    ClearModal();
+        //    ClearModal();
         $('#AjaxDlg').modal('hide');
     }
 
     $(document).ready(function () {
-      $("#DateFed").datepicker({
-        format: "yyyy M dd",
-        dateInput: true,
-        value: new Date()
-    });
+        $("#DateFed").datepicker({
+            format: "yyyy M dd",
+            dateInput: true,
+            value: new Date()
+        });
     })
 
     function GetStates(arr) {
         $('#ddlState').html('');
-         $('#ddlState').append('<option value="-1">Select State/Province</option>');
- for (var i = 0; i < arr.length; i++) {
-               $('#ddlState').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
-        
+        $('#ddlState').append('<option value="-1">Select State/Province</option>');
+        for (var i = 0; i < arr.length; i++) {
+            $('#ddlState').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+
         }
-        }
+    }
 
     function GetCities(arr) {
         $('#ddlCity').html('');
         $('#ddlCity').append('<option value="-1">Select City</option>');
-         for (var i = 0; i < arr.length; i++) {
-               $('#ddlCity').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+        for (var i = 0; i < arr.length; i++) {
+            $('#ddlCity').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
         }
-        }
+    }
     function GetCountries(arr) {
-          $('#ddlCountry').append('<option value="-1">Select State/Province</option>');
-         for (var i = 0; i < arr.length; i++) {
-             $('#ddlCountry').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
+        $('#ddlCountry').append('<option value="-1">Select State/Province</option>');
+        for (var i = 0; i < arr.length; i++) {
+            $('#ddlCountry').append('<option value="' + arr[i].Id + '">' + arr[i].Name + '</option>');
         }
     }
 
@@ -185,30 +201,30 @@
     function AddFood(name, unitid) {
         var food = { Name: name, UnitId: unitid };
         ApiRequest(food, '/api/Ducks/Food/Add', function (e) {
-            $('#Food').append(new Option(e.Name, e.Id, true, true));
-             $('#AjaxDlg').modal('hide');
+            $('#FoodId').append(new Option(e.Name, e.Id, true, true));
+            $('#AjaxDlg').modal('hide');
         })
     }
 
-    function AddLocation(address,city) {
+    function AddLocation(address, city) {
         var locations = { Address: address, CityId: city, }
-          ApiRequest(locations, '/api/Ducks/Location/Add', function (e) {
-            $('#Locations').append(new Option(e.Address, e.Id, true, true));
-             $('#AjaxDlg').modal('hide');
+        ApiRequest(locations, '/api/Ducks/Location/Add', function (e) {
+            $('#LocationId').append(new Option(e.Address, e.Id, true, true));
+            $('#AjaxDlg').modal('hide');
         })
     }
     function ApiRequest(data, endpoint, callback) {
-    $.ajax({
-        type: 'POST',
-        url: endpoint,
-        data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            if (typeof(callback) != 'undefined') {
-                callback(response);
+        $.ajax({
+            type: 'POST',
+            url: endpoint,
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (typeof (callback) != 'undefined') {
+                    callback(response);
+                }
             }
-        }
 
-    });
-}
+        });
+    }
 </script>
