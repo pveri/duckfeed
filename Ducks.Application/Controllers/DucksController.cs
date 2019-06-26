@@ -9,6 +9,9 @@ using System.Web.Http.Results;
 using Ducks.Application.Models.ViewModels;
 namespace Ducks.Application.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DucksController : ApiController
     {
         private Models.DuckManager _manager;
@@ -17,7 +20,11 @@ namespace Ducks.Application.Controllers
         {
             _manager = new Models.DuckManager();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NewLocation"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Location/Add")]
@@ -25,7 +32,10 @@ namespace Ducks.Application.Controllers
         {
             return Json(await _manager.AddLocation(NewLocation, User.Identity.Name));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Location/Countries")]
@@ -34,7 +44,11 @@ namespace Ducks.Application.Controllers
             var result = await _manager.Countries();
             return Json(result.Select(x => new { Id=x.Id, Name = x.Name }));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Country"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Location/States")]
@@ -43,7 +57,11 @@ namespace Ducks.Application.Controllers
             var result = await _manager.States(Country);
             return Json(result.Select(x => new { Id = x.Id, Name = x.Name }));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="State"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Location/Cities")]
@@ -52,6 +70,10 @@ namespace Ducks.Application.Controllers
             var result = await _manager.Cities(State);
             return Json(result.Select(x => new { Id = x.Id, Name = x.Name }));
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Food/Units")]
@@ -61,6 +83,11 @@ namespace Ducks.Application.Controllers
             return Json(result.Select(x => new { Id = x.Id, Name = x.Measurement }));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NewFood"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("api/Ducks/Food/Add")]

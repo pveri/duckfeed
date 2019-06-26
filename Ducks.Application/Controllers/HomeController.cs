@@ -35,13 +35,20 @@ namespace Ducks.Application.Controllers
 
             return View();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Feed()
         {
             return View(_manager.FeedLogEntry());
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Feed(Ducks.Application.Models.ViewModels.FeedingVM model)
@@ -49,7 +56,10 @@ namespace Ducks.Application.Controllers
 
             return View("Complete", new Ducks.Application.Models.ViewModels.FeedingDetailsVM(await _manager.InsertFeedingRecord(model, User.Identity.Name)));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Researcher")]
         public async Task<ActionResult> List()
         {
