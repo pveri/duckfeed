@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ducks.Data", "Ducks.Data\Du
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ducks.Application", "Ducks.Application\Ducks.Application.csproj", "{4EF6F1CC-67B9-4A12-AFB0-275629F86400}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ducks.Tests", "Ducks.Tests\Ducks.Tests.csproj", "{80802EFE-6171-4194-9D5F-1BF40523EB31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4EF6F1CC-67B9-4A12-AFB0-275629F86400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EF6F1CC-67B9-4A12-AFB0-275629F86400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EF6F1CC-67B9-4A12-AFB0-275629F86400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80802EFE-6171-4194-9D5F-1BF40523EB31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80802EFE-6171-4194-9D5F-1BF40523EB31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80802EFE-6171-4194-9D5F-1BF40523EB31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80802EFE-6171-4194-9D5F-1BF40523EB31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

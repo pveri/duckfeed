@@ -18,6 +18,11 @@ namespace Ducks.Application.Models
             _db = new Data.Context.DuckContext();
         }
 
+        public DuckManager(Ducks.Data.Context.DuckContext db)
+        {
+            _db = db;
+        }
+
         public Models.ViewModels.FeedingVM FeedLogEntry()
         {
             var toReturn = new Models.ViewModels.FeedingVM();

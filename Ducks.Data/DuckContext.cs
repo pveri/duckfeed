@@ -14,17 +14,17 @@ namespace Ducks.Data.Context
         {
 
         }
-        public DuckContext(): base("name=DucksConnection")
+        public DuckContext() : base("name=DucksConnection")
         {
 
         }
         public DbSet<Food> Food { get; set; }
-        public DbSet <FeedLog> FeedLog { get; set; }
-        public DbSet <Unit> Unit { get; set; }
+        public DbSet<FeedLog> FeedLog { get; set; }
+        public DbSet<Unit> Unit { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> State { get; set; }
-        public DbSet <User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
 
