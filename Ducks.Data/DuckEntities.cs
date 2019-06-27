@@ -77,9 +77,10 @@ namespace Ducks.Data
     public class Schedule
     {
         public Guid Id { get; set; }
-        public User User { get; set; }
-        public FeedLog FeedLog { get; set; }
-        public String TimeOfDay { get; set; }
+        public virtual User User { get; set; }
+        public virtual FeedLog FeedLog { get; set; }
+        public TimeSpan TimeOfDay { get; set; }
+        public DateTime? LastRun { get; set; }
     }
 
 }

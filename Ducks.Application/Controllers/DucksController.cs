@@ -96,5 +96,12 @@ namespace Ducks.Application.Controllers
             return Json(await _manager.AddFood(NewFood, User.Identity.Name));
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/Schedule/Run")]
+        public void RunDucks()
+        {
+           _manager.RunScheduleFeed();
+        }
     }
 }

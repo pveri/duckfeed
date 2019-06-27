@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,7 @@ namespace Ducks.Application.Models.ViewModels
         public int Quantity { get; set; }
         public int FoodAmount { get; set; }
         public DateTime DateFed { get; set; }
+        [DataType(DataType.Time)]
         public String Time { get; set; }
         public bool Schedule { get; set; }
     }

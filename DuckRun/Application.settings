@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DuckRun" GeneratedClassName="Application">
+  <Profiles />
+  <Settings>
+    <Setting Name="runUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://testducks.us-west-2.elasticbeanstalk.com/api/Schedule/Run</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -93,7 +93,7 @@ namespace Ducks.Application.Models
 
             if (feedingVm.Schedule)
             {
-                _db.Schedules.Add(new Data.Schedule() { Id = Guid.NewGuid(), FeedLog = Feed, User = Feed.User, TimeOfDay = feedingVm.Time });
+                _db.Schedules.Add(new Data.Schedule() { Id = Guid.NewGuid(), FeedLog = Feed, User = Feed.User, TimeOfDay = TimeSpan.Parse(feedingVm.Time) });
             }
             await _db.SaveChangesAsync();
             return Feed;
@@ -105,6 +105,37 @@ namespace Ducks.Application.Models
             {
                 _db.Users.Add(new Data.User() { Id = Id, Email = Email, FirstName = FirstName, LastName = LastName });
                 _db.SaveChanges();
+            }
+        }
+
+        public void RunScheduleFeed()
+        {
+            var time = DateTime.Now.TimeOfDay;
+            // If the first job runs at 12:01 AM, this would grab all jobs at 12:00.
+            var tasks = _db.Schedules.Where(x => x.TimeOfDay < time).ToList();
+
+            // If the time is 1:00 AM, we will have grabbed all jobs including ones that have already been run between
+            // midnight and now. Only run either new jobs (lastrun is null) or jobs that are before right now,
+            // and have not been run yet today 
+
+            tasks = tasks.Where(x => !x.LastRun.HasValue || x.LastRun.Value.Date < DateTime.Today.Date).ToList();
+
+            foreach (var feeding in tasks)
+            {
+                var feedLog = feeding.FeedLog;
+                _db.FeedLog.Add(new Data.FeedLog()
+                {
+                    DateFed = DateTime.Now,
+                    DucksFed = feedLog.DucksFed,
+                    Food = feedLog.Food,
+                    FoodAmount = feedLog.FoodAmount,
+                    Id = Guid.NewGuid(),
+                    Location = feedLog.Location,
+                    User = feedLog.User
+                });
+                _db.Schedules.Find(feeding.Id).LastRun = DateTime.Now;
+                _db.SaveChanges();
+
             }
         }
     }
