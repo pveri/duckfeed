@@ -13,9 +13,14 @@ namespace Ducks.Application.Models.ViewModels
         public Guid LocationId { get; set; }
         public Dictionary<Guid, String> Locations { get; set; }
         public Dictionary<Guid, String> Food { get; set; }
+        [Display(Name ="Number of ducks")]
         public int Quantity { get; set; }
+        [Display(Name = "Amount of food")]
         public int FoodAmount { get; set; }
+        [Display(Name = "Date Fed")]
+        [Required]
         public DateTime DateFed { get; set; }
+        [Required]
         [DataType(DataType.Time)]
         public String Time { get; set; }
         public bool Schedule { get; set; }
